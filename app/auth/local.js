@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy,
+    request = require('request');
 
 function Local(options) {
     this.options = options;
@@ -14,6 +15,13 @@ Local.prototype.setup = function() {
         usernameField: 'username',
         passwordField: 'password'
     }, function(identifier, password, done) {
+        request('http://127.0.0.1:3000/api/v1/login', function (error, response, body) {
+            // if (!error && response.statusCode == 200) {
+                console.log(body); // Show the HTML for the Google homepage. 
+            // }
+        })
+
+
         var User = mongoose.model('User');
         User.authenticate(identifier, password, function(err, user) {
             if (err) {
